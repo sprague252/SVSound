@@ -55,7 +55,7 @@ def wavread(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
     """
     import warnings
     deprication_msg = "wavefile.wavread() is depricated. Use wavefile.read()."
-    raise warnings.DepricationWarning(deprication_msg)
+    warnings.warn(deprication_msg, FutureWarning)
     info, wave = read(filename, t0, t1, wavetype, chunk_b)
     return(info, wave)
 
