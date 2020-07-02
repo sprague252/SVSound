@@ -39,26 +39,35 @@ Read a WAV file and return the file information and waveform data. This function
 
 Input parameters
     
->`filename` - string with the name of the input WAV file
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>filename</code> - string with the name of the input WAV file 
+</p>
 
->`t0` - start time in seconds for returned data (default: 0)
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>t0</code> - start time in seconds for returned data (default: 0) 
+</p>
 
->`t1` - end time in seconds for returned data. Value of -1 represents
-        the end of the file. (default: -1)
-        
->`wavetype` - string representing the type of WAV file (default:
-None). Currnetly supported types are 'generic', 'decimus',
-'icListen', and 'zoom'. If the value is None, the wavetype
-is determined using identify.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>t1</code> - end time in seconds for returned data. Value of -1 represents the end of the file. (default: -1) 
+</p>
 
->`chunk_b` - number of bytes for each data chunk read from the
-file (default: 3072)
-     
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>wavetype</code> - string representing the type of WAV file (default: None). Currnetly supported types are 'generic', 'decimus', 'icListen', and 'zoom'. If the value is None, the wavetype is determined using identify. 
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>chunk_b</code> - number of bytes for each data chunk read from the file (default: 3072) 
+</p>
+
 Output
     
->`info` - dictionary with file information
+<p style="margin-left: 3em; text-indent: -2em;">
+`info` - dictionary with file information 
+</p>
 
->`wave` - Numpy array with waveform data values
+<p style="margin-left: 3em; text-indent: -2em;">
+`wave` - Numpy array with waveform data values 
+</p>
 
 #### identify( )
 
@@ -71,11 +80,15 @@ filename.
 
 Input parameter
     
->`file` - filehandle for the WAV file to be identified
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>file</code> - filehandle for the WAV file to be identified 
+</p>
             
 Output
 
->`wavetype` - string with the name of the wave file type.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>wavetype</code> - string with the name of the wave file type. 
+</p>
 
 #### wave_chunk( )
 
@@ -84,7 +97,11 @@ This is a back-end to the read function and is not intended for high-level use.
 
 ## recorders Subpackage
 
-The subpackage `recorders` contains modules with specific `get_info()` functions for each supported recorder type. Currently supported recorders are described in the wavefile Module introduction (above). Each `get_info()` function has the same input and output parameters and usage.
+The subpackage `recorders` contains modules with specific `get_info()`
+functions for each supported recorder type. Currently supported
+recorders are described in the wavefile Module introduction (above).
+Each `get_info()` function has the same input and output parameters and
+usage.
 
 `info = get_info(file, info)`
 
@@ -94,42 +111,67 @@ dictionary.
 
 Input Parameters
     
->`file` - filehandle of an open WAV file
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>file</code> - filehandle of an open WAV file 
+</p>
 
->`info` - (optional) dictionary that may contain file
-    information from other sources. Defaults to an empty
-    dictionary.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>info</code> - (optional) dictionary that may contain file information from
+other sources. Defaults to an empty dictionary. 
+</p>
     
 Output
     
->`info` - dictionary with information read from the file. If an info
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>info</code> - dictionary with information read from the file. If an info
 dictionary was supplied as an input parameter, entires that were not
-changed are also included.
+changed are also included. 
+</p>
     
 Standard `info` dictionary keys and values returned for all file types:
     
->`"bits"` - integer with the number of bits in each sample.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"bits"</code> - integer with the number of bits in each sample. 
+</p>
 
->`"block_align"` - number of bytes sampled at the same time (all
-channels combined) in the data
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"block_align"</code> - number of bytes sampled at the same time (all channels
+combined) in the data 
+</p>
 
->`"byte_per_s"` - integer number of bytes per second recorded
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"byte_per_s"</code> - integer number of bytes per second recorded 
+</p>
 
->`"chan"` - integer number of channels in the file
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"chan"</code> - integer number of channels in the file 
+</p>
 
->`"compress"` - integer Wave file compression index. Only 1
-(uncompressed integer data) and 3 (uncompressed floating point data) are
-currently supported.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"compress"</code> - integer Wave file compression index. Only 1 (uncompressed
+integer data) and 3 (uncompressed floating point data) are currently
+supported. 
+</p>
 
->`"data0"` - integer byte address of the first sample in the file
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"data0"</code> - integer byte address of the first sample in the file 
+</p>
 
->`"filesize"` - integer size of the file in bytes
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"filesize"</code> - integer size of the file in bytes 
+</p>
 
->`"fs"` - integer sample rate in samples/second
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"fs"</code> - integer sample rate in samples/second 
+</p>
 
->`"Nsamples"` - integer number of samples in the file (in each channel)
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"Nsamples"</code> - integer number of samples in the file (in each channel) 
+</p>
 
->`"wavetype"` - string with the name file type read.
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"wavetype"</code> - string with the name file type read. 
+</p>
 
 Other keys and values in the `info` dictionary are recorder-specific and
 depend on the `wavetype` value.
@@ -164,38 +206,67 @@ Recordings identified as Zoom recordings have `info["wavetype"]` set to
 "zoom". The following information encoded in the bext chunk is added to
 `info` as keys and values (See Zoom documentation for details.)
     
->`"CodingHistory"` - coding history string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"CodingHistory"</code> - coding history string 
+</p>
 
->`"desc"` - recording description string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"desc"</code> - recording description string 
+</p>
 
->`"LoudnessRange"` - int16 recording loudness range value
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"LoudnessRange"</code> - int16 recording loudness range value 
+</p>
 
->`"LoudnessValue"` - int16 recording loudness value
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"LoudnessValue"</code> - int16 recording loudness value 
+</p>
 
->`"MaxMomentaryLoudness"` - int16 recording maximum momentary
-loudness value
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"MaxMomentaryLoudness"</code> - int16 recording maximum momentary loudness
+value 
+</p>
 
->`"MaxShortTermLoudness"` - int16 recording maximum short term
-loudness value
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"MaxShortTermLoudness"</code> - int16 recording maximum short term loudness
+value
+</p>
 
->`"MaxTruePeakLevel"` - int16 recording maximum maximum true
-peak level
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"MaxTruePeakLevel"</code> - int16 recording maximum maximum true peak level 
+</p>
 
->`"OriginationDate"` - recording origination date string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"OriginationDate"</code> - recording origination date string 
+</p>
 
->`"OriginationTime"` - recording origination time string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"OriginationTime"</code> - recording origination time string 
+</p>
 
->`"Originator"` - recording originator string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"Originator"</code> - recording originator string 
+</p>
 
->`"OriginatorReference"` - recording originator reference string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"OriginatorReference"</code> - recording originator reference string 
+</p>
 
->`"TimeReferenceHigh"` - int32 time of high sample in recording
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"TimeReferenceHigh"</code> - int32 time of high sample in recording 
+</p>
 
->`"TimeReferenceLow"` - int32 time of low sample in recording
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"TimeReferenceLow"</code> - int32 time of low sample in recording 
+</p>
 
->`"UMID"` - UMID string
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"UMID"</code> - UMID string 
+</p>
 
->`"Version"` - int16 version number
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"Version"</code> - int16 version number 
+</p>
 
 The contents in the entire iXML block are stored in `info["iXML"]` as a
 string.
