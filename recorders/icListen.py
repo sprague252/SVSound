@@ -1,11 +1,50 @@
-"""Package containing get_info program for a Broadcast Wave file written
+"""Module containing get_info program for a Broadcast Wave file written
 by an icListen device.
 """
 from __future__ import division
 
 def get_info(file, info={}):
-    """Read the information in a Broadcast Wave Format (BWF) file
-    written by the icListen recorder and return the contents.
+    """info = get_info(file, info={})
+    Read the information in a WAV file written by an icListen recorder
+    and return the contents. The standard information in the fmt chunk
+    is included in the info dictionary along with other information
+    encoded in INFO chunk.
+    Input Parameters
+    
+        file - filehandle of an open WAV file
+        info - (optional) dictionary that may contain file
+            information from other sources. Defaults to an empty
+            dictionary.
+    
+    Output
+    
+        info - dictionary with information read from the file. If an
+            info dictionary was supplied as an input parameter,
+            entires that were not changed are also included.
+    
+    Standard info dictionary keys and values returned
+    
+        "bits" - integer with the number of bits in each sample.
+        "block_align" - number of bytes sampled at the same time (all
+            channels combined) in the data
+        "byte_per_s" - integer number of bytes per second recorded
+        "chan" - integer number of channels in the file
+        "compress" - integer Wave file compression index. Only 1
+            (uncompressed integer data) and 3 (uncompressed floating
+            point data) are currently supported.
+        "data0" - integer byte address of the first sample in the file
+        "filesize" - integer size of the file in bytes
+        "fs" - integer sample rate in samples/second
+        "Nsamples" - integer number of samples in the file (in each channel)
+        "wavetype" - string with "decimus" as the wave file type read.
+        
+    Additional info dictionary keys and values returned
+    
+        Each key/value pair written to the INFO chunk in the file are
+        added to the info dictionary. See the icListen documentation for
+        details on these parameters. The value info["cal"] contains a
+        float64 calibration value for the data. Multiply data samples by
+        this value to obtain calibrated values in micropascals.
     """
     import struct
     import numpy as np

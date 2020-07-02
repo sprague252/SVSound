@@ -61,7 +61,19 @@ def wavread(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
 
 
 def identify(file):
-    """Identify the type of WAV file."""
+    """wavetype = identify(file)
+    
+    Identify the type of WAV file and return its type. Files that are
+    unable to be identified are classified as generic. The wave type
+    identification allows the extraction of proprietary metadata stored
+    in the file and filename.
+    Input parameter
+    
+      file - filehandle for the WAV file to be identified
+            
+    Output
+
+      wavetype - string with the name of the wave file type."""
     import warnings
     from os.path import basename
     import struct
@@ -146,7 +158,7 @@ def getInfo(file, wavetype=None):
     
 def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
     """Read a WAVE file in chunks (not all at once) and return all the
-    data. This is a back-end to the wavread program.
+    data. This is a back-end to the read function.
     """
     import numpy as np
     import struct

@@ -1,4 +1,4 @@
-"""Package containing get_info program for a Broadcast Wave file written
+"""Module containing get_info program for a Broadcast Wave file written
 by a Decimus device.
 """
 from __future__ import division

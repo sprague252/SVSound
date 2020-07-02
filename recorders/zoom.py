@@ -1,4 +1,4 @@
-"""Package containing get_info and wavread programs for a Broadcast Wave
+"""Module containing get_info and wavread programs for a Broadcast Wave
 file written by an ZOOM F8 recorder.
 """
 from __future__ import division
@@ -7,6 +7,67 @@ def get_info(file, info={}):
     """Read the information in a Broadcast Wave Format (BWF) file
     written by the ZOOM F8 recorder and return the contents.
     """
+    """info = get_info(file, info={}) Read the information in a WAV file
+    written by a Zoom device (this function was written specifically for
+    recordings made by the Zoom F8 recorder but it may work with other
+    Zoon devices as well) and return the contents. The standard
+    information in the fmt chunk is included in the info dictionary as
+    well as information in the bext chunk and the iXML chunk.
+    Input Parameters
+    
+        file - filehandle of an open WAV file
+        info - (optional) dictionary that may contain file
+            information from other sources. Defaults to an empty
+            dictionary.
+    
+    Output
+    
+        info - dictionary with information read from the file. If an
+            info dictionary was supplied as an input parameter,
+            entires that were not changed are also included.
+    
+    Standard info dictionary keys and values returned
+    
+        "bits" - integer with the number of bits in each sample.
+        "block_align" - number of bytes sampled at the same time (all
+            channels combined) in the data
+        "byte_per_s" - integer number of bytes per second recorded
+        "chan" - integer number of channels in the file
+        "compress" - integer Wave file compression index. Only 1
+            (uncompressed integer data) and 3 (uncompressed floating
+            point data) are currently supported.
+        "data0" - integer byte address of the first sample in the file
+        "filesize" - integer size of the file in bytes
+        "fs" - integer sample rate in samples/second
+        "Nsamples" - integer number of samples in the file (in each
+            channel)
+        "wavetype" - string with "decimus" as the wave file type read.
+    
+    bext Chunk info dictionary keys and values returned. (See Zoom
+    documentation for details.)
+    
+        "CodingHistory" - coding history string
+        "desc" - recording description string
+        "LoudnessRange" - int16 recording loudness range value
+        "LoudnessValue" - int16 recording loudness value
+        "MaxMomentaryLoudness" - int16 recording maximum momentary
+            loudness value
+        "MaxShortTermLoudness" - int16 recording maximum short term
+            loudness value
+        "MaxTruePeakLevel" - int16 recording maximum maximum true
+            peak level
+        "OriginationDate" - recording origination date string
+        "OriginationTime" - recording origination time string
+        "Originator" - recording originator string
+        "OriginatorReference" - recording originator reference string
+        "TimeReferenceHigh" - int32 time of high sample in recording
+        "TimeReferenceLow" - int32 time of low sample in recording
+        "UMID" - UMID string
+        "Version" - int16 version number
+        
+    The contents in the entire iXML block are stored in info["iXML"] as
+    a string."""
+
     import struct
     import numpy as np
     file.seek(0)
