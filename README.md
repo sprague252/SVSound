@@ -11,15 +11,15 @@ supported:
 * generic - generic Windows WAVE file format containing the basic
 infromation in the WAVE format chunk. No additional metadata is read.
 
-* decimus - Windows WAVE file written by the Decimus(R) passive
+* decimus - Windows WAVE file written by the Decimus&reg; passive
 acoustics monitoring system and other devices that use the SA
 Instrumentation DAQ card. Metadata is extracted from the filename, which
 includes a timestamp, into the info dictionary.
 
-* icListen - WAVE files written by icListen(R) recording devices.
+* icListen - WAVE files written by icListen&reg; recording devices.
 Metadata in the INFO chunk is read into the info dictionary.
 
-* zoom - WAVE files written by ZOOM(R) recording devices. Metadata from
+* zoom - WAVE files written by ZOOM&reg; recording devices. Metadata from
 the bext chunk and the iXML chunk is read into the info dictionary.
 
 ### Functions
