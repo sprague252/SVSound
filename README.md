@@ -281,7 +281,7 @@ Read data from a single-channel file and plot it vs. time.
     >>> info, data = wavefile.read('filename.wav')
     >>> info['chan']
     1
-    >>> times = np.arange(info['Nsamples']) * info['fs']
+    >>> times = np.arange(info['Nsamples']) / info['fs']
     >>> plt.plot(times, data)
     ...
 
