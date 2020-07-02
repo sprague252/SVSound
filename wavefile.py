@@ -19,8 +19,8 @@ propriatory boadcast wave file formats are currently supported:
 
 from __future__ import division, print_function
 
-def wavread(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
-    """info, wave = wavread(filename, t0, t1, wavetype, chunk_b)
+def read(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
+    """info, wave = read(filename, t0, t1, wavetype, chunk_b)
     
     Read a WAV file and return the file information and waveform data.
     Input parameters
@@ -47,6 +47,16 @@ def wavread(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
     info = getInfo(file, wavetype)
     wave = wave_chunk(file, info, t0, t1, chunk_b=chunk_b)
     file.close()
+    return(info, wave)
+
+def wavread(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
+    """Depricated: This is a frontend to wavefile.read maintained for
+    legacy purposes. See wavefile.read for complete usage information.
+    """
+    import warnings
+    deprication_msg = "wavefile.wavread() is depricated. Use wavefile.read()."
+    raise warnings.DepricationWarning(deprication_msg)
+    info, wave = read(filename, t0, t1, wavetype, chunk_b)
     return(info, wave)
 
 
