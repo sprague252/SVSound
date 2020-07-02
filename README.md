@@ -283,8 +283,7 @@ Read data from a single-channel file and plot it vs. time.
     1
     >>> times = np.arange(info['Nsamples']) * info['fs']
     >>> plt.plot(times, data)
-
-...
+    ...
 
 Note that the data in a multichannel recording has rows for each channel, so `data[0]` is the first channel, `data[1]` the second channel, etc.
     
