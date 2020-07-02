@@ -66,7 +66,7 @@ Output
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>wave</code> - Numpy array with waveform data values 
+<code>wave</code> - Numpy array with waveform data values. For a single channel file, <code>wave</code> is a flat, 1-D array. For a multichannel recording each channel is a row in <code>wave</code>, so <code>wave[0]</code> is the first channel, <code>wave[1]</code> the second channel, etc.
 </p>
 
 #### identify( )
@@ -271,4 +271,20 @@ value
 The contents in the entire iXML block are stored in `info["iXML"]` as a
 string.
 
+## Usage Example
 
+Read data from a single-channel file and plot it vs. time.
+
+    >>> import numpy as np
+    >>> import matplotlib.pyplot as plt
+    >>> from SVSound import wavefile
+    >>> info, data = wavefile.read('filename.wav')
+    >>> info['chan']
+    1
+    >>> times = np.arange(info['Nsamples']) * info['fs']
+    >>> plt.plot(times, data)
+
+...
+
+Note that the data in a multichannel recording has rows for each channel, so `data[0]` is the first channel, `data[1]` the second channel, etc.
+    
