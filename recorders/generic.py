@@ -9,12 +9,35 @@ def get_info(file, info={}):
     """
     import struct
     import numpy as np
+    # tag_size is for ID3 tags
+    tag_size = None
     file.seek(0)
     data = file.read(4)
     if data != b'RIFF':
-        raise ValueError('Chunk ID not RIFF: ', data)
+        if data[0:3] == b'ID3':
+            # There is an ID3 tag at the beginning if the file.
+            # Only ID3v2 tags are supported. See <https://id3.org/id3v2.3.0>.
+            file.seek(2, 1)
+            data0 = file.read(1)
+            data1 = file.read(1)
+            data2 = file.read(1)
+            data3 = file.read(1)
+            tag_size = (
+                int.from_bytes(data3, 'big') + int.from_bytes(data2,
+                'big') * 2**7 + int.from_bytes(data1, 'big') * 2**14 +
+                int.from_bytes(data0, 'big') * 2**21
+           )
+            # Skip forward tag_size bytes.
+            file.seek(tag_size, 1)
+            data = file.read(4)
+            if data != b'RIFF':
+                raise ValueError('Chunk ID not RIFF: ', data)
+        else:
+            raise ValueError('Chunk ID not RIFF: ', data)
     data = file.read(4)
     info['filesize'] = struct.unpack('<I',data)[0] + 8
+    if tag_size != None:
+        info['filesize'] = info['filesize'] + tag_size + 10
     data = file.read(4)
     if data != b'WAVE':
         raise ValueError('Chunk ID not WAVE: ', data)

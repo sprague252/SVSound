@@ -54,12 +54,32 @@ def identify(file):
     """Identify the type of WAV file."""
     import warnings
     from os.path import basename
+    import struct
     # Test each known file type for type-specific properties.
     # First make sure the file is a WAVE file.
     file.seek(0)
     data = file.read(4)
     if data != b'RIFF':
-        raise ValueError('Chunk ID not RIFF: ', data)
+        if data[0:3] == b'ID3':
+            # There is an ID3 tag at the beginning if the file.
+            # Only ID3v2 tags are supported. See <https://id3.org/id3v2.3.0>.
+            file.seek(2, 1)
+            data0 = file.read(1)
+            data1 = file.read(1)
+            data2 = file.read(1)
+            data3 = file.read(1)
+            tag_size = (
+                int.from_bytes(data3, 'big') + int.from_bytes(data2,
+                'big') * 2**7 + int.from_bytes(data1, 'big') * 2**14 +
+                int.from_bytes(data0, 'big') * 2**21
+           )
+            # Skip forward tag_size bytes.
+            file.seek(tag_size, 1)
+            data = file.read(4)
+            if data != b'RIFF':
+                raise ValueError('Chunk ID not RIFF: ', data)
+        else:
+            raise ValueError('Chunk ID not RIFF: ', data)
     file.seek(4, 1)
     data = file.read(4)
     if data != b'WAVE':
@@ -115,6 +135,9 @@ def getInfo(file, wavetype=None):
     return(info)
     
 def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
+    """Read a WAVE file in chunks (not all at once) and return all the
+    data. This is a back-end to the wavread program.
+    """
     import numpy as np
     import struct
     import logging
@@ -127,7 +150,6 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
         logger.setLevel(logging.INFO)
     else:
         logger.setLevel(logging.WARNING)
-# Update below for multiple channels
     t0_pos = info['data0'] + np.uint32(np.floor(t0 * info['byte_per_s']))
     if t1==-1:
         t1_pos = info['data0'] + info['Nsamples'] * info['block_align']
@@ -138,6 +160,8 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
             raise ValueError('Past EOF')
         except ValueError:
             print("t1 is past the end of file")
+            print("t1_pos: ", t1_pos)
+            print("info['filesize']: ", info['filesize'])
             raise
     # nn is the number of bytes to read.
     nn = t1_pos - t0_pos
@@ -220,7 +244,7 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
     return(wave)
 
 def _decode24(string):
-    # Decode 24-bit binary data, often used in WAV files.
+    """Decode 24-bit binary integer data, often used in WAV files."""
     from struct import unpack
     fmt = '<'+ str(len(string)//3) + 'i'
     # Convert the string to a 32 bit (4-byte) string by adding \0 as the
