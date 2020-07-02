@@ -275,6 +275,7 @@ string.
 
 Read data from a single-channel file and plot it vs. time.
 
+    >>> from __future__ import division
     >>> import numpy as np
     >>> import matplotlib.pyplot as plt
     >>> from SVSound import wavefile
