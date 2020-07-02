@@ -48,25 +48,34 @@ Input parameters
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>t1</code> - end time in seconds for returned data. Value of -1 represents the end of the file. (default: -1) 
+<code>t1</code> - end time in seconds for returned data. Value of -1
+represents the end of the file. (default: -1) 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>wavetype</code> - string representing the type of WAV file (default: None). Currnetly supported types are 'generic', 'decimus', 'icListen', and 'zoom'. If the value is None, the wavetype is determined using identify. 
+<code>wavetype</code> - string representing the type of WAV file
+(default: None). Currnetly supported types are 'generic', 'decimus',
+'icListen', and 'zoom'. If the value is None, the wavetype is determined
+using identify. 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>chunk_b</code> - number of bytes for each data chunk read from the file (default: 3072) 
+<code>chunk_b</code> - number of bytes for each data chunk read from the
+file (default: 3072) 
 </p>
 
 Output
     
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>info</code> - dictionary with file information 
+<code>info</code> - dictionary with file information and metadata (if available)
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>wave</code> - Numpy array with waveform data values. For a single channel file, <code>wave</code> is a flat, 1-D array. For a multichannel recording each channel is a row in <code>wave</code>, so <code>wave[0]</code> is the first channel, <code>wave[1]</code> the second channel, etc.
+<code>wave</code> - Numpy array with waveform data values. For a single
+channel file, <code>wave</code> is a flat, 1-D array. For a multichannel
+recording each channel is a row in <code>wave</code>, so
+<code>wave[0]</code> is the first channel, <code>wave[1]</code> the
+second channel, etc.
 </p>
 
 #### identify( )
@@ -93,7 +102,8 @@ Output
 #### wave_chunk( )
 
 Read a WAVE file in chunks (not all at once) and return all the data.
-This is a back-end to the read function and is not intended for high-level use.
+This is a back-end to the read function and is not intended for
+high-level use.
 
 ## recorders Subpackage
 
@@ -116,16 +126,16 @@ Input Parameters
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>info</code> - (optional) dictionary that may contain file information from
-other sources. Defaults to an empty dictionary. 
+<code>info</code> - (optional) dictionary that may contain file
+information from other sources. Defaults to an empty dictionary. 
 </p>
     
 Output
     
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>info</code> - dictionary with information read from the file. If an info
-dictionary was supplied as an input parameter, entires that were not
-changed are also included. 
+<code>info</code> - dictionary with information read from the file. If
+an info dictionary was supplied as an input parameter, entires that were
+not changed are also included. 
 </p>
     
 Standard `info` dictionary keys and values returned for all file types:
@@ -135,8 +145,8 @@ Standard `info` dictionary keys and values returned for all file types:
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"block_align"</code> - number of bytes sampled at the same time (all channels
-combined) in the data 
+<code>"block_align"</code> - number of bytes sampled at the same time
+(all channels combined) in the data 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
@@ -148,13 +158,14 @@ combined) in the data
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"compress"</code> - integer Wave file compression index. Only 1 (uncompressed
-integer data) and 3 (uncompressed floating point data) are currently
-supported. 
+<code>"compress"</code> - integer Wave file compression index. Only 1
+(uncompressed integer data) and 3 (uncompressed floating point data) are
+currently supported. 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"data0"</code> - integer byte address of the first sample in the file 
+<code>"data0"</code> - integer byte address of the first sample in the
+file 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
@@ -166,7 +177,8 @@ supported.
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"Nsamples"</code> - integer number of samples in the file (in each channel) 
+<code>"Nsamples"</code> - integer number of samples in the file (in each
+channel) 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
@@ -223,17 +235,18 @@ Recordings identified as Zoom recordings have `info["wavetype"]` set to
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"MaxMomentaryLoudness"</code> - int16 recording maximum momentary loudness
-value 
+<code>"MaxMomentaryLoudness"</code> - int16 recording maximum momentary
+loudness value 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"MaxShortTermLoudness"</code> - int16 recording maximum short term loudness
-value
+<code>"MaxShortTermLoudness"</code> - int16 recording maximum short term
+loudness value
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"MaxTruePeakLevel"</code> - int16 recording maximum maximum true peak level 
+<code>"MaxTruePeakLevel"</code> - int16 recording maximum maximum true
+peak level 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
@@ -249,11 +262,13 @@ value
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"OriginatorReference"</code> - recording originator reference string 
+<code>"OriginatorReference"</code> - recording originator reference
+string 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-<code>"TimeReferenceHigh"</code> - int32 time of high sample in recording 
+<code>"TimeReferenceHigh"</code> - int32 time of high sample in
+recording 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
