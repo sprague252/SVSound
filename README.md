@@ -62,11 +62,11 @@ Input parameters
 Output
     
 <p style="margin-left: 3em; text-indent: -2em;">
-`info` - dictionary with file information 
+<code>info</code> - dictionary with file information 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
-`wave` - Numpy array with waveform data values 
+<code>wave</code> - Numpy array with waveform data values 
 </p>
 
 #### identify( )
