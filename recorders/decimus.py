@@ -1,10 +1,40 @@
 """Module containing get_info program for a Broadcast Wave file written
-by a Decimus device.
-"""
+by a Decimus device."""
 from __future__ import division
 
 def get_info(file, info={}):
-    """Read the information in a Decimus WAV file, and return the contents.
+    """info = get_info(file, info={})
+    Read the information in a WAV file written by a Decimus device and
+   return the contents. The standard information in the fmt chunk is
+   included in the info dictionary.
+    Input Parameters
+    
+        file - filehandle of an open WAV file
+        info - (optional) dictionary that may contain file
+            information from other sources. Defaults to an empty
+            dictionary.
+    
+    Output
+    
+        info - dictionary with information read from the file. If an
+            info dictionary was supplied as an input parameter,
+            entires that were not changed are also included.
+    
+    info dictionary keys and values returned
+    
+        "bits" - integer with the number of bits in each sample.
+        "block_align" - number of bytes sampled at the same time (all
+            channels combined) in the data
+        "byte_per_s" - integer number of bytes per second recorded
+        "chan" - integer number of channels in the file
+        "compress" - integer Wave file compression index. Only 1
+            (uncompressed integer data) and 3 (uncompressed floating
+            point data) are currently supported.
+        "data0" - integer byte address of the first sample in the file
+        "filesize" - integer size of the file in bytes
+        "fs" - integer sample rate in samples/second
+        "Nsamples" - integer number of samples in the file (in each channel)
+        "wavetype" - string with "decimus" as the wave file type read.
     """
     import struct
     import numpy as np
