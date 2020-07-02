@@ -181,19 +181,19 @@ depend on the `wavetype` value.
 #### Decimus
 
 Recordings identified as Decimus recordings have `info["wavetype"]` set
-to "decimus". Otherwise, they contain only the standard info keys and
+to "decimus". Otherwise, `info` contains only the standard info keys and
 values.
 
 #### Generic
 
 Recordings classified as generic have `info["wavetype"]` set to
-"generic" and contain only the standard info keys and values.
+"generic", and `info` contains only the standard info keys and values.
 
 #### icListen
 
 Recordings identified as icListen recordings have `info["wavetype"]` set
-to "icListen". In addition, each key/value pair written to the INFO
-chunk in the file are added to `info`. See the icListen documentation
+to "icListen". In addition, each key/value pair encoded in the INFO
+chunk in the file is added to `info`. See the icListen documentation
 for details on these parameters. 
 
 The value `info["cal"]` contains a float64 calibration value for the data.
@@ -204,7 +204,7 @@ micropascals.
 
 Recordings identified as Zoom recordings have `info["wavetype"]` set to
 "zoom". The following information encoded in the bext chunk is added to
-`info` as keys and values (See Zoom documentation for details.)
+`info` as keys and values. (See Zoom documentation for details.)
     
 <p style="margin-left: 3em; text-indent: -2em;">
 <code>"CodingHistory"</code> - coding history string 
