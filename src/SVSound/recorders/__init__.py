@@ -1,4 +1,4 @@
-"""This submodule contains format specifications for several proprietary Broadcast Wave file formats. Currently supported formats include:
+"""This subpackage contains modules with format specifications for several proprietary Broadcast Wave file formats. Currently supported formats include:
 
   generic - generic Windows WAVE file format containing the basic
        infromation in the WAVE format chunk. No additional metadata is read.
