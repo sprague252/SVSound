@@ -235,7 +235,7 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
         wave = np.append(wave, decode(chunk))
     if ncrumb:
         # Check to see that ncrumb is a whole number of samples
-        if (np.mod(ncrumb, info['bits']//8) >= 0):
+        if (np.mod(ncrumb, info['bits']//8) > 0):
             # ncrumb has a partial sample at the end likely due to truncation error.
             logger.info('Partial sample in ncrumb:')
             logger.info('  {:d} bytes out of {:d} bytes'.format(np.mod(ncrumb, \
