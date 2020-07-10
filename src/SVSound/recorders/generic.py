@@ -55,9 +55,9 @@ def get_info(file, info={}):
                 int.from_bytes(data3, 'big') + int.from_bytes(data2,
                 'big') * 2**7 + int.from_bytes(data1, 'big') * 2**14 +
                 int.from_bytes(data0, 'big') * 2**21
-           )
-            # Skip forward tag_size bytes.
-            file.seek(tag_size, 1)
+            )
+            data = file.read(tag_size)
+            info['ID3'] = data
             data = file.read(4)
             if data != b'RIFF':
                 raise ValueError('Chunk ID not RIFF: ', data)
@@ -72,7 +72,7 @@ def get_info(file, info={}):
         raise ValueError('Chunk ID not WAVE: ', data)
     data = file.read(4)
     while data != b'fmt ':
-        chunk_name = b'Chunk ' + data
+        chunk_name = 'Chunk ' + data.decode('ascii')
         chunk_size = struct.unpack('<I', file.read(4))[0]
         data = file.read(chunk_size)
         info[chunk_name] = data

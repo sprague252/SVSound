@@ -6,6 +6,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 
 * 0.0.1 - initial release
 * 0.0.2 - Corrected a bug that caused the end of a wave file to be truncated.
+* 0.03 - Corrected a bug causing incorrect partial file read; include ID3 contents (in binary form) in info.
 
 ## wavefile Module
 
@@ -31,7 +32,7 @@ the bext chunk and the iXML chunk is read into the info dictionary.
 
 #### read( )
 
-`info, wave = read(filename, t0, t1, wavetype, chunk_b)`
+`info, wave = read(filename, t0, t1, wavetype, chunk_b, verbose)`
 
 Read a WAV file and return the file information and waveform data. This function includes support for single and multiple channel files encoded in linear PCM format with the following data formats (all little-endian):
 
@@ -68,6 +69,11 @@ using identify.
 <code>chunk_b</code> - number of bytes for each data chunk read from the
 file (default: 3072) 
 </p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>verbose</code> - give verbose status updates (default: False)
+</p>
+
 
 Output
     
@@ -302,7 +308,7 @@ Read data from a single-channel file and plot it vs. time.
     >>> info, data = wavefile.read('filename.wav')
     >>> info['chan']
     1
-    >>> times = np.arange(info['Nsamples']) / info['fs']
+    >>> times = np.arange(data.size / info['fs'])
     >>> plt.plot(times, data)
     ...
 

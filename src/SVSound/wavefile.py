@@ -19,7 +19,7 @@ propriatory boadcast wave file formats are currently supported:
 
 from __future__ import division, print_function
 
-def read(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
+def read(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072, verbose=False):
     """info, wave = read(filename, t0, t1, wavetype, chunk_b)
     
     Read a WAV file and return the file information and waveform data.
@@ -35,6 +35,7 @@ def read(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
         is determined using identify.
       chunk_b - number of bytes for each data chunk read from the
         file (default: 3072)
+      verbose - give verbose status updates (default: False)
      
     Output
     
@@ -45,7 +46,7 @@ def read(filename, t0=0, t1=-1, wavetype=None, chunk_b=3072):
     import numpy as np
     file = open(filename, 'rb')
     info = getInfo(file, wavetype)
-    wave = wave_chunk(file, info, t0, t1, chunk_b=chunk_b)
+    wave = wave_chunk(file, info, t0, t1, chunk_b=chunk_b, verbose=verbose)
     file.close()
     return(info, wave)
 
@@ -156,7 +157,7 @@ def getInfo(file, wavetype=None):
     info = get_info(file, info)
     return(info)
     
-def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
+def wave_chunk(file, info, t0=0, t1=-1, chunk_b=3072, verbose=False):
     """Read a WAVE file in chunks (not all at once) and return all the
     data. This is a back-end to the read function.
     """
@@ -172,11 +173,15 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=768, verbose=False):
         logger.setLevel(logging.INFO)
     else:
         logger.setLevel(logging.WARNING)
-    t0_pos = info['data0'] + np.uint32(np.floor(t0 * info['byte_per_s']))
+    t0_pos = info['data0'] + np.uint32(np.floor(t0 * info['fs']) * 
+        info['block_align'])
     if t1==-1:
         t1_pos = info['data0'] + info['Nsamples'] * info['block_align']
     else:
-        t1_pos = info['data0'] + np.uint32(np.floor(t1 * info['byte_per_s'])) + 1
+        # Subtract 1 from t1 address to only include samples up to (not
+        # including) t1.
+        t1_pos = info['data0'] + np.uint32(np.floor(t1 * info['fs'] - 1) * 
+            info['block_align'])
     if (t1_pos > info['filesize']):
         try:
             raise ValueError('Past EOF')
