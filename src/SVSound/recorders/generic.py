@@ -92,13 +92,11 @@ def get_info(file, info={}):
         size = struct.unpack('<H', file.read(2))[0]
         info['extra fmt'] = file.read(size)
     data = file.read(4)
-    if (data == b'PAD ' or data == b'FLLR'):
-        # Some devices insert a padding chunk or a filler chunk. Skip it.
-        pad_size = struct.unpack('<I', file.read(4))[0]
-        file.seek(pad_size,1)
+    while data != b'data':
+        # Skip extra 'nonstandard' chunks until the data chunk.
+        chunk_size = struct.unpack('<I', file.read(4))[0]
+        file.seek(chunk_size,1)
         data = file.read(4)
-    if data != b'data':
-        raise ValueError('Chunk ID not data: ', data)
     # We are at the data chunk.
     # Nsamples is the number samples in the file (should be total time * fs).
     info['Nsamples'] = struct.unpack('<I', file.read(4))[0] // \
