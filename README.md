@@ -6,7 +6,8 @@ This is Python package for reading Broadcast Wave Files in various formats along
 
 * 0.0.1 - initial release
 * 0.0.2 - Corrected a bug that caused the end of a wave file to be truncated.
-* 0.03 - Corrected a bug causing incorrect partial file read; include ID3 contents (in binary form) in info.
+* 0.0.3 - Corrected a bug causing incorrect partial file read; include ID3 contents (in binary form) in info.
+* 0.0.4 - Now skips over nonstandard file chunks without producing errors.
 
 ## wavefile Module
 
