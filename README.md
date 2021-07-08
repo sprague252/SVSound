@@ -11,6 +11,30 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.0.5 - contains an error ... do not use
 * 0.0.6 - Not many changes other than support for Python 3.9.
 
+## Installation
+
+### Conda/Mamba
+
+Install using `conda`:
+
+```
+conda install -c sprague252 svsound
+```
+
+Install using `mamba`:
+
+```
+mamba install -c sprague252 svsound
+```
+
+### Pip
+
+Install using `pip`:
+
+```
+pip install svsound
+```
+
 
 ## wavefile Module
 
