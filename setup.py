@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="svsound", # Replace with your own username
-    version="0.0.7",
+    version="0.0.8",
     author="Mark Sprague",
     author_email="spraguem@ecu.edu",
     description="A package to read Broadcast Wave files",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sprague252/SVSound",
-    packages=['SVSound', 'SVSound.recorders', 'SVSound.levels'],
+    packages=['SVSound', 'SVSound.recorders'],
     package_dir = {'SVSound': 'src/SVSound'},
     classifiers=[
         "Programming Language :: Python :: 3",
