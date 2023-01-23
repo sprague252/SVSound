@@ -84,17 +84,17 @@ def get_info(file, info={}):
         raise ValueError('Chunk ID not bext: ', data)
     bext_size = struct.unpack('<I', file.read(4))[0]
     data = file.read(256)  
-    info['desc'] = data.split(b'\0',1)[0]
+    info['desc'] = data.split(b'\0',1)[0].decode()
     data = file.read(32)
-    info['Originator'] = data.split(b'\0',1)[0]
+    info['Originator'] = data.split(b'\0',1)[0].decode()
     data = file.read(32)
-    info['OriginatorReference'] = data.split(b'\0',1)[0]
-    info['OriginationDate'] = file.read(10)
-    info['OriginationTime'] = file.read(8)
+    info['OriginatorReference'] = data.split(b'\0',1)[0].decode()
+    info['OriginationDate'] = file.read(10).decode()
+    info['OriginationTime'] = file.read(8).decode()
     info['TimeReferenceLow'] = struct.unpack('<I', file.read(4))[0]
     info['TimeReferenceHigh'] = struct.unpack('<I', file.read(4))[0]
     info['Version'] = struct.unpack('<H',file.read(2))[0]
-    info['UMID'] = file.read(64)
+    info['UMID'] = file.read(64).decode()
     info['LoudnessValue'] = struct.unpack('<H',file.read(2))[0]
     info['LoudnessRange'] = struct.unpack('<H',file.read(2))[0]
     info['MaxTruePeakLevel'] = struct.unpack('<H',file.read(2))[0]
@@ -102,14 +102,13 @@ def get_info(file, info={}):
     info['MaxShortTermLoudness'] = struct.unpack('<H',file.read(2))[0]
     file.seek(180,1)
     data = file.read(bext_size - 602)
-    info['CodingHistory'] = data.split(b'\0',1)[0]
+    info['CodingHistory'] = data.split(b'\0',1)[0].decode()
     data = file.read(4)
-    if data != b'iXML':
-        raise ValueError('Chunk ID not iXML: ', data)
-    iXML_size = struct.unpack('<I', file.read(4))[0]
-    data = file.read(iXML_size)
-    info['iXML'] = data.split(b'\0',1)[0]
-    data = file.read(4)
+    if data == b'iXML':
+        iXML_size = struct.unpack('<I', file.read(4))[0]
+        data = file.read(iXML_size)
+        info['iXML'] = data.split(b'\0',1)[0].decode()
+        data = file.read(4)
     if data != b'fmt ':
         raise ValueError('Chunk ID not fmt : ', data)
     fmt_size = struct.unpack('<I', file.read(4))[0]
