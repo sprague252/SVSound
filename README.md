@@ -10,6 +10,8 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.0.4 - Now skips over nonstandard file chunks without producing errors.
 * 0.0.5 - contains an error ... do not use
 * 0.0.6 - Not many changes other than support for Python 3.9.
+* 0.0.7 - Support for Python 3.10; added levels subpackage to calculate SPL values and SEL values from sampled sounds.
+* 0.0.8 - Corrected decoding errors by converting binary strings to ACII stings when interpreting nonstandard sub-chunks written by icListen and Zoom recorders.
 
 ## Installation
 
@@ -324,6 +326,56 @@ recording
 
 The contents in the entire iXML block are stored in `info["iXML"]` as a
 string.
+
+## levels Module
+
+The module `levels` contains the functions `spl`, `sel`, `spl_wav`, `spl_wav_dir`, `spl_wav_files`, `A_weighting`, `M_weighting`, and `weight`. Each funcion contains a detailed usage message.
+
+### spl
+
+Return an array of sampled sound pressure levels using time constant T.  
+
+#### Usage
+    
+        SPL = spl(data, fs, weighting='A', tconst=0.125, pref=20.0)
+    
+#### Input Parameters
+
+`data`: an array of sampled sound pressures.
+    
+`fs`: sampling frequency in hertz.
+
+`weighting`: type of weighting to use. This parameter can be a string to represent
+preset values 'A' for A-weighting, 'M' for M-weighting (see
+documentation on the function weight() to set frequency parameters). It
+can also be a function that provides digital filter parameters to the
+weight() function. For no weighting, use weighting = 1. The default is
+'A' weighting.
+
+    tconst: time constant. Defaullts to 0.125 s (fast). This parameter can be 
+        the value in seconds or preset values given with the strings 'Fast' 
+        (0.125 s), 'Slow' (1.000 s), or "Impulse' (0.035 s).
+    pref: reference pressure. Defaults to 20.0 (micropascals, standard for
+        atmospheric sounds). Use 1.0 (micropascals) for underwater sounds.
+    cal: calibration factor of the recording. This is the value that
+        converts data samples to the appropriate pressure units
+        (micropascals). The default value is 1 (no calibration
+        adjustment).
+    pms: an initial value for the mean square pressure 'historical'
+        value for time constant. Use this to continue the calculation
+        from another recording. Defaults to 0.0.
+    pms_return: whether or not to return the mean square pressure value for 
+        subsequent calculations. Defaults to False.
+    
+    Output
+    
+    SPL: a numpy array of sampled sound pressure levels corresponding to the 
+        the same sampling times a the elements of data.  Note that the initial 
+        elements SPL[i] are based on a truncated history because they only use 
+        pressure values from data[i] back to data[0].
+    pms: The mean square sound pressure for use in subsequent
+        calculations such as the recording continuing in another
+        file. Only returned if the input parameter pms_return is True.
 
 ## Usage Example
 
