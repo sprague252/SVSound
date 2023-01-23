@@ -53,7 +53,7 @@ def get_info(file, info={}):
     if data != b'RIFF':
         raise ValueError('Chunk ID not RIFF: ', data)
     data = file.read(4)
-    info['filesize'] = struct.unpack('<I',data)[0] + 8
+    info['RIFFChunksize'] = struct.unpack('<I',data)[0] + 8
     data = file.read(4)
     if data != b'WAVE':
         raise ValueError('Chunk ID not WAVE: ', data)
@@ -68,8 +68,9 @@ def get_info(file, info={}):
     # Now start reading info chunks and storing them in info{}.
     key = file.read(4)
     while key != b'fmt ':
+        akey = key.decode('ascii')
         size = struct.unpack('<I', file.read(4))[0]
-        info[key] = file.read(size)
+        info[akey] = file.read(size).decode('ascii')
         key = file.read(4)
     # We are now in the fmt sub chunk. Set some INFO parameters before 
     # continuing.
