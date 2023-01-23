@@ -1,0 +1,18 @@
+package:
+  name: svsound
+  version: "0.0.10"
+about:
+  home: https://github.com/sprague252/SVSound
+  license: GPL-3.0
+  summary: A package to read Broadcast Wave files
+source:
+  fn: svsound-0.0.10.tar.gz
+  url: https://files.pythonhosted.org/packages/7c/bd/4510f4aed70e2e528cecee5979bb7c16c2928736f4c96585526f3b811c0f/svsound-0.0.9.tar.gz
+  md5: "a75c7c2ef3d531af1d273420396b8ac9"
+
+requirements:
+  build:
+    - pip >=19
+    - python >=3.6
+  run:
+    - python >=3.6
