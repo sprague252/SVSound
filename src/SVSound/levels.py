@@ -174,7 +174,7 @@ def spl_wav(wavfile, t0=0, t1=-1, weighting='A', tconst=0.125, pref=20.0, \
      The output file is a CSV file with rows of (time, SPL) pairs. 
     """
     from os.path import splitext
-    import ..wavefile
+    import .wavefile
     import csv
     fs, data = wavfile.read(wavfile, t0, t1)
     SPL = spl(data, fs, weighting, tconst, pref, cal)
