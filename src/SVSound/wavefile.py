@@ -134,6 +134,10 @@ def identify(file):
     # beginning with 'PAM'
     elif basename(file.name)[0:3] == 'PAM':
         wavetype = 'decimus'
+    # Check to see if it is a LARS file. LARS files have names
+    # beginning with 'LH'
+    elif basename(file.name)[0:2] == 'LH':
+        wavetype = 'lars'
     else:
         # Use generic WAVE file format.
         wavetype = 'generic'
@@ -150,6 +154,8 @@ def getInfo(file, wavetype=None):
         from .recorders.decimus import get_info
     if wavetype == 'icListen':
         from .recorders.icListen import get_info
+    if wavetype == 'lars':
+        from .recorders.lars import get_info
     if wavetype == 'zoom':
         from .recorders.zoom import get_info
     if wavetype == 'generic':
@@ -175,20 +181,21 @@ def wave_chunk(file, info, t0=0, t1=-1, chunk_b=3072, verbose=False):
         logger.setLevel(logging.WARNING)
     t0_pos = info['data0'] + np.uint32(np.floor(t0 * info['fs']) * 
         info['block_align'])
+    lastdata_pos = info['data0'] + info['Nsamples'] * info['block_align']
     if t1==-1:
-        t1_pos = info['data0'] + info['Nsamples'] * info['block_align']
+        t1_pos = lastdata_pos
     else:
         # Subtract 1 from t1 address to only include samples up to (not
         # including) t1.
         t1_pos = info['data0'] + np.uint32(np.floor(t1 * info['fs'] - 1) * 
             info['block_align'])
-    if (t1_pos > info['filesize']):
+    if (t1_pos > lastdata_pos):
         try:
             raise ValueError('Past EOF')
         except ValueError:
             print("t1 is past the end of file")
             print("t1_pos: ", t1_pos)
-            print("info['filesize']: ", info['filesize'])
+            print("lastdata_pos: ", lastdata_pos)
             raise
     # nn is the number of bytes to read.
     nn = t1_pos - t0_pos
