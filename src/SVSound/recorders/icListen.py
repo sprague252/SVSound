@@ -53,7 +53,7 @@ def get_info(file, info={}):
     if data != b'RIFF':
         raise ValueError('Chunk ID not RIFF: ', data)
     data = file.read(4)
-    info['RIFFChunksize'] = struct.unpack('<I',data)[0] + 8
+    info['filesize'] = struct.unpack('<I',data)[0] + 8
     data = file.read(4)
     if data != b'WAVE':
         raise ValueError('Chunk ID not WAVE: ', data)
