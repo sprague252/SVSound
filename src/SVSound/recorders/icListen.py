@@ -61,7 +61,7 @@ def get_info(file, info={}):
     if data != b'LIST':
         raise ValueError('Chunk ID not LIST: ', data)
     data = file.read(4)
-    info['LISTsize'] = info['filesize'] = struct.unpack('<I',data)[0]
+    info['LISTsize'] = struct.unpack('<I',data)[0]
     data = file.read(4)
     if data != b'INFO':
         raise ValueError('Chunk Format not INFO: ', data)
