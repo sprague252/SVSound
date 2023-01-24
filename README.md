@@ -11,9 +11,8 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.0.5 - contains an error ... do not use
 * 0.0.6 - Not many changes other than support for Python 3.9.
 * 0.0.7 - Support for Python 3.10; added levels subpackage to calculate SPL values and SEL values from sampled sounds.
-* 0.0.8 - Corrected decoding errors by converting binary strings to ACII stings when interpreting nonstandard sub-chunks written by icListen and Zoom recorders.
-* 0.0.9 - contains an error ... do not use
-* 0.0.10 - Corrected an error in `levels.py` discovered after uploading previous version.
+* 0.0.8--0.0.10 - All contain an error ... do not use
+* 0.1.0 -  Decimus, icListen, and Zoom recorders fully supported. Correctly converts binary strings to ACII stings when interpreting nonstandard sub-chunks written by icListen and Zoom recorders. Determines file length correctly. Module `levels` imports module `wavefile` correctly. Supports Python <= 3.11.
 
 ## Installation
 
