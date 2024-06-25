@@ -75,11 +75,19 @@ def get_info(file, info={}):
     # We are now in the fmt sub chunk. Set some INFO parameters before 
     # continuing.
     icmt = info['ICMT'].split()
-    vmax = np.float64(icmt[0])
-    # The following values are encoded as integers but can be forced into 
-    # float64 (double precision) with no loss of precision.
-    sens = np.float64(icmt[3])
-    wavemax = np.float64(icmt[13])
+    # Not all icListen recorders use the same order of parameters. 
+    # Loop through icmt to get parameters.
+    for i in range(len(icmt)):
+        if (icmt[i] == 'V') and (icmt[i+1] == 'pk,'):
+            vmax = np.float64(icmt[i-1])
+        # The following values are encoded as integers but can be forced into 
+        # float64 (double precision) with no loss of precision.
+        if (icmt[i] == 'dBV') and (icmt[i+1] == 're') and (icmt[i+2]
+            == '1uPa,'):
+            sens = np.float64(icmt[i-1])
+        if (icmt[i] == '=') and (icmt[i+1] == 'Max') and (icmt[i+2]
+            == 'Count,'):
+            wavemax = np.float64(icmt[i-1])
     info['cal'] = vmax / wavemax * 10**(-sens / 20.0)
     # Continue with fmt sub chunk.
     fmtsize = struct.unpack('<I', file.read(4))[0]
