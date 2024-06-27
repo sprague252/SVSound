@@ -13,6 +13,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.0.7 - Support for Python 3.10; added levels subpackage to calculate SPL values and SEL values from sampled sounds.
 * 0.0.8--0.0.10 - All contain an error ... do not use
 * 0.1.0 -  Decimus, icListen, and Zoom recorders fully supported. Correctly converts binary strings to ACII stings when interpreting nonstandard sub-chunks written by icListen and Zoom recorders. Determines file length correctly. Module `levels` imports module `wavefile` correctly. Supports Python <= 3.11.
+* 0.2.0 - AudioMoth recorders fully supported with data extracted from the ICMT and IART sub-chunks added to the info dictionary.
 
 ## Installation
 
@@ -41,12 +42,16 @@ pip install svsound
 
 ## wavefile Module
 
-The module `wavefile` contains programs for reading Broadcast Wave (.wav) files.
-The following propriatory boadcast wave file formats are currently
-supported:
+The module `wavefile` contains programs for reading Broadcast Wave
+(.wav) files. The following propriatory boadcast wave file formats are
+currently supported:
 
 * generic - generic Windows WAVE file format containing the basic
 infromation in the WAVE format chunk. No additional metadata is read.
+
+* AudioMoth - Windows WAVE file written by an AudioMoth recording
+device. Metadata extracted from the ICMT and IART chunks is added to the
+info dictionary.
 
 * decimus - Windows WAVE file written by the Decimus&reg; passive
 acoustics monitoring system and other devices that use the SA
@@ -65,7 +70,10 @@ the bext chunk and the iXML chunk is read into the info dictionary.
 
 `info, wave = read(filename, t0, t1, wavetype, chunk_b, verbose)`
 
-Read a WAV file and return the file information and waveform data. This function includes support for single and multiple channel files encoded in linear PCM format with the following data formats (all little-endian):
+Read a WAV file and return the file information and waveform data. This
+function includes support for single and multiple channel files encoded
+in linear PCM format with the following data formats (all
+little-endian):
 
   * 8 bit signed integer
   * 16 bit signed integer
@@ -91,9 +99,9 @@ represents the end of the file. (default: -1)
 
 <p style="margin-left: 3em; text-indent: -2em;">
 <code>wavetype</code> - string representing the type of WAV file
-(default: None). Currnetly supported types are 'generic', 'decimus',
-'icListen', and 'zoom'. If the value is None, the wavetype is determined
-using identify. 
+(default: None). Currnetly supported types are 'generic', 'AudioMoth',
+'decimus', 'icListen', and 'zoom'. If the value is None, the wavetype is
+determined using identify. 
 </p>
 
 <p style="margin-left: 3em; text-indent: -2em;">
@@ -231,6 +239,40 @@ Other keys and values in the `info` dictionary are recorder-specific and
 depend on the `wavetype` value.
 
 ### Recorder-Specific info keys and values
+
+#### AudioMoth
+
+Recordings identified as AudioMoth recordings have `info["wavetype"]` set
+to "AudioMoth".  In addition to the standard `info` parameters, the following metadata parameters are added:
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"ICMT"</code> -  string with the contents of the ICMT subchunk.
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"IART"</code> -  string with the contents of the IART subchunk.
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"datestring"</code> -  string with the date and time of the
+beginning of the recording in ISO 8601 format.
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"voltage"</code> -  string with the battery voltage at the
+beginning of the recording.
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"gain"</code> -  string with the AudioMoth gain setting for
+            recording.
+</p>
+
+<p style="margin-left: 3em; text-indent: -2em;">
+<code>"serial number"</code> -  string with the serial number of the
+AudioMoth recording device. 
+</p>
+
 
 #### Decimus
 
