@@ -14,6 +14,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.0.8--0.0.10 - All contain an error ... do not use
 * 0.1.0 -  Decimus, icListen, and Zoom recorders fully supported. Correctly converts binary strings to ACII stings when interpreting nonstandard sub-chunks written by icListen and Zoom recorders. Determines file length correctly. Module `levels` imports module `wavefile` correctly. Supports Python <= 3.11.
 * 0.2.0 - AudioMoth recorders fully supported with data extracted from the ICMT and IART sub-chunks added to the info dictionary. Supports Python <= 3.12.
+* 0.2.1 - Bumped version to fix errors in pypi upload.
 
 ## Installation
 
