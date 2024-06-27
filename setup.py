@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="svsound", # Replace with your own username
-    version="0.2.0",
+    version="0.2.1",
     author="Mark Sprague",
     author_email="spraguem@ecu.edu",
     description="A package to read Broadcast Wave files",
