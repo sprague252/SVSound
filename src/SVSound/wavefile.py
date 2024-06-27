@@ -78,6 +78,7 @@ def identify(file):
     import warnings
     from os.path import basename
     import struct
+    wavetype = None
     # Test each known file type for type-specific properties.
     # First make sure the file is a WAVE file.
     file.seek(0)
@@ -130,16 +131,40 @@ def identify(file):
             message = 'bext originator string not ZOOM...Using generic format'
             warnings.warn(message)
             wavetype = 'generic'
-    # Check to see if it is a Decimus file. Decimus files have names
-    # beginning with 'PAM'
-    elif basename(file.name)[0:3] == 'PAM':
-        wavetype = 'decimus'
-    # Check to see if it is a LARS file. LARS files have names
-    # beginning with 'LH'
-    elif basename(file.name)[0:2] == 'LH':
-        wavetype = 'lars'
+    # If the 'fmt ' chunk is first, it could be an AudioMoth or a
+    # generic WAVE file. Note that Decimus and LARS recordings are
+    # generic WAVE files with data encoded in the file name.
+    elif data == b'fmt ':
+        # AudionMoth files have a LIST chunk with ICMT and IART
+        # subchunks just after the fmt  chunk.
+        size = struct.unpack('<I', file.read(4))[0]
+        file.seek(size, 1)
+        data = file.read(4)
+        if data == b'LIST':
+            # In the LIST chunk. Could be an AudioMoth file.
+            size = struct.unpack('<I', file.read(4))[0]
+            data = file.read(8)
+            if data == b'INFOICMT':
+                # Still could be an AudioMoth recording.
+                size = struct.unpack('<I', file.read(4))[0]
+                icmt = file.read(size).decode('ascii').rstrip('\x00')
+                if search(r'AudioMoth', icmt) != None:
+                    # This is an AudioMoth recording.
+                    wavetype = 'AudioMoth'
+        if wavetype == None:
+            # Check to see if it is a Decimus file. Decimus files have
+            # names beginning with 'PAM'
+            if basename(file.name)[0:3] == 'PAM':
+                wavetype = 'decimus'
+            # Check to see if it is a LARS file. LARS files have names
+            # beginning with 'LH'
+            elif basename(file.name)[0:2] == 'LH':
+                wavetype = 'lars'
+            else:
+                # Use generic WAVE file format.
+                wavetype = 'generic'
     else:
-        # Use generic WAVE file format.
+        # File does not match known recorders. Use generic.
         wavetype = 'generic'
     return(wavetype)
 
@@ -150,6 +175,8 @@ def getInfo(file, wavetype=None):
     if wavetype == None:
         wavetype = identify(file)
     info = {'wavetype' : wavetype}
+    if wavetype == 'AudioMoth':
+        from .recorders.AudioMoth import get_info
     if wavetype == 'decimus':
         from .recorders.decimus import get_info
     if wavetype == 'icListen':
