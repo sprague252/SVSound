@@ -36,7 +36,7 @@ def get_info(file, info={}):
         "filesize" - integer size of the file in bytes
         "fs" - integer sample rate in samples/second
         "Nsamples" - integer number of samples in the file (in each channel)
-        "wavetype" - string with "decimus" as the wave file type read.
+        "wavetype" - string with "icListen" as the wave file type read.
         
     Additional info dictionary keys and values returned
     
