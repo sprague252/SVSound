@@ -1,0 +1,31 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SVSound"
+version = "0.3.0"
+authors = [
+  { name="Mark Sprague", email="sprague252@gmail.com" },
+]
+description = "A package to read Broadcast Wave files"
+dependencies = [
+  "numpy",
+  "scipy",
+  "pytables"
+]
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/sprague252/SVSound"
+Issues = "https://github.com/sprague252/SVSound/issues"
+
