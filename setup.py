@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="svsound", # Replace with your own username
-    version="0.2.1",
+    version="0.3.0",
     author="Mark Sprague",
     author_email="spraguem@ecu.edu",
     description="A package to read Broadcast Wave files",
@@ -19,5 +19,5 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.9',
 )
