@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SVSound"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
   { name="Mark Sprague", email="sprague252@gmail.com" },
 ]
@@ -15,7 +15,7 @@ description = "A package to read Broadcast Wave files"
 dependencies = [
   "numpy",
   "scipy",
-  "pytables"
+  "tables"
 ]
 readme = "README.md"
 requires-python = ">=3.9"
