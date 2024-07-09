@@ -9,7 +9,7 @@ from the data files to perform various analyses.
 from __future__ import division
 
 def sgwavfile(wavfile, t0=0, t1=-1, nfft=2048, noverlap=-1, window='hann', \
-    flength=60., ftime=True, ftype=None, verbose=False):
+    flength=60., ftime=True, datestring=None, ftype=None, verbose=False):
     """Compute spectrograms of a .WAV file and save it to HDF5 files
     (with bzip2 compression implemented). This function uses
     scipy.signal.spectrogram to compute the spectrograms of the data.
@@ -31,6 +31,9 @@ def sgwavfile(wavfile, t0=0, t1=-1, nfft=2048, noverlap=-1, window='hann', \
         (seconds) or samples. The default value is 60 seconds.
     ftime: boolean that specifies whether flength is a time (True) or
         a number of samples (False). The default value is True.
+    datestring: set the datestring for the sprctrogram file. If
+        datestring is None the datestring is extracted from the WAV
+        file. The default value is None.
     ftype: The type of WAV file. This parameter allows the extraction
         of proprietary metadata recorded in some WAV files by
         different recorder. Use None for a standard WAV file,
@@ -71,44 +74,51 @@ def sgwavfile(wavfile, t0=0, t1=-1, nfft=2048, noverlap=-1, window='hann', \
                 fletcher32=True)
     with open(wavfile, 'rb') as infile:
         info = wavefile.getInfo(infile, ftype)
-        if (info['wavetype'] == 'zoom'):
-            # Time information is stored in the WAV file in the time
-            # zone for which the recorder was set.
-            datestring = info['OriginationDate'] + 'T' + info['OriginationTime']
-        elif (info['wavetype'] == 'icListen'):
-            # Extract the time and date information from the filename.
-            tdinfo = wavfile.replace('.', '_').split('_')[1:3]
-            datestring = tdinfo[0][:4]+ '-' + tdinfo[0][4:6] + '-' + \
-                tdinfo[0][6:8] + 'T' + tdinfo[1][:2] + ':' + \
-                tdinfo[1][2:4] + ':' + tdinfo[1][4:6] + 'Z'
-        elif (info['wavetype'] == 'decimus'):
-            # Extract the time and date information from the filename.
-            tdinfo = wavfile.replace('.', '_').split('_')[1:4]
-            datestring = tdinfo[0][:4]+ '-' + tdinfo[0][4:6] + '-' + \
-                tdinfo[0][6:8] + 'T' + tdinfo[1][:2] + ':' + \
-                tdinfo[1][2:4] + ':' + tdinfo[1][4:6] + '.' + \
-                tdinfo[2] + 'Z'
-        else:
-            # Try to get datestring from WAV file modification time.
-            fm = stat(wavfile).st_mtime
-            datestring = str( \
-                np.datetime64(np.int64(fm), 's') - \
-                    np.timedelta64( \
-                        np.int64( \
-                            np.round( \
-                                info['Nsamples'] / info['fs'] \
-                            ) \
-                        ), \
-                        's' \
-                    ) \
-                ) + \
-                'Z'
+        if datestring == None:
+            # Get the datestring from the WAV file.
+            if (info['wavetype'] == 'zoom'):
+                # Time information is stored in the WAV file in the time
+                # zone for which the recorder was set.
+                datestring = (info['OriginationDate'] + 'T' +
+                    info['OriginationTime'])
+            elif (info['wavetype'] == 'icListen'):
+                # Extract the time and date information from the
+                # filename.
+                tdinfo = wavfile.replace('.', '_').split('_')[1:3]
+                datestring = (tdinfo[0][:4]+ '-' + tdinfo[0][4:6] +
+                    '-' + tdinfo[0][6:8] + 'T' + tdinfo[1][:2] + ':'
+                    + tdinfo[1][2:4] + ':' + tdinfo[1][4:6] +
+                    'Z')
+            elif (info['wavetype'] == 'decimus'):
+                # Extract the time and date information from the
+                # filename.
+                tdinfo = wavfile.replace('.', '_').split('_')[1:4]
+                datestring = (tdinfo[0][:4]+ '-' + tdinfo[0][4:6] +
+                    '-' + tdinfo[0][6:8] + 'T' + tdinfo[1][:2] + ':'
+                    + tdinfo[1][2:4] + ':' + tdinfo[1][4:6] + '.' +
+                    tdinfo[2] + 'Z')
+            else:
+                # Try to get datestring from WAV file modification time.
+                fm = stat(wavfile).st_mtime
+                datestring = (str( 
+                    np.datetime64(np.int64(fm), 's') - 
+                        np.timedelta64( 
+                            np.int64( 
+                                np.round( 
+                                    info['Nsamples'] / info['fs'] 
+                                ) 
+                            ), 
+                            's' 
+                        ) 
+                    ) + 
+                    'Z')
         # flength determines the size of the input file slice in seconds
-        # (ftime==True) or samples (ftime ==False) for each output file. Note
-        # that there will also be some overlap samples at the end of
-        # intermediate input files.
+        # (ftime==True) or samples (ftime ==False) for each output file.
+        # Note that there will also be some overlap samples at the end
+        # of intermediate input files.
         if ftime==False:
-            # flength is in samples. Convert to seconds for compatibility with other code.
+            # flength is in samples. Convert to seconds for
+            # compatibility with other code.
             flength = flength / info['fs']
         # n0 is the initial sample to process.
         n0 = int(t0 * info['fs'])
@@ -119,14 +129,18 @@ def sgwavfile(wavfile, t0=0, t1=-1, nfft=2048, noverlap=-1, window='hann', \
             n1 = int(t1 * info['fs']) - 1
         # Determine the number of samples to process.
         nn = n1 - n0 + 1
-        # Determine the number of output files. There may be extra samples at the end.
+        # Determine the number of output files. There may be extra
+        # samples at the end.
         nfiles = np.int64(np.floor(nn / info['fs'] / flength))
-        # nnfile is the number of wave samples in each file, not including overlap.
+        # nnfile is the number of wave samples in each file, not
+        # including overlap.
         nnfile = np.int64(flength * info['fs'])
         # nskip is the number of samples to skip for each FFT.
         nskip = nfft - noverlap
-        # nnfft is the number of FFTs to process in each complete input file.
-        nnfft = np.int64(np.ceil((flength * info['fs'] - nfft) / nskip + 1))
+        # nnfft is the number of FFTs to process in each complete input
+        # file.
+        nnfft = np.int64(np.ceil((flength * info['fs'] - nfft) /
+            nskip + 1))
         # nend is the number of samples from the first input file sample
         # to the last input file sample to process in each output file.
         # There could be some extra samples past flength to complete the
