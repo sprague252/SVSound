@@ -45,6 +45,7 @@ def get_info(file, info={}):
     import numpy as np
     import datetime as dt
     from os.path import basename
+    fname = basename(file.name)
     # Filename should start with 'LH'.
     if fname[0][:2] != 'LH':
         raise ValueError('File name does not begin with LH: ', fname[0])
