@@ -17,6 +17,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.2.1 - Bumped version to fix errors in pypi upload.
 * 0.3.0 - Added sgwave to do some spectral analysis.
 * 0.3.1 - Fixed a dependency error.
+* 0.3.2 - Fixed a filename error for LARS files.
 
 ## Installation
 
