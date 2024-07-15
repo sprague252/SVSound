@@ -97,6 +97,11 @@ def sgwavfile(wavfile, t0=0, t1=-1, nfft=2048, noverlap=-1, window='hann', \
                     '-' + tdinfo[0][6:8] + 'T' + tdinfo[1][:2] + ':'
                     + tdinfo[1][2:4] + ':' + tdinfo[1][4:6] + '.' +
                     tdinfo[2] + 'Z')
+            elif (info['wavetype'] == 'lars'):
+                # Extract the time and date information from the
+                # filename.
+                tdinfo = wavfile.replace('.', '_').split('_')[1:4]
+                datestring = info['datestring']
             else:
                 # Try to get datestring from WAV file modification time.
                 fm = stat(wavfile).st_mtime

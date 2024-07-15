@@ -19,6 +19,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.3.1 - Fixed a dependency error.
 * 0.3.2 - Fixed a filename error for LARS files.
 * 0.3.3 - Fixed another LARS filename error (tested this time).
+* 0.3.4 - Updated sgwavefile for LARS.
 
 ## Installation
 
