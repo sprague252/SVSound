@@ -16,6 +16,7 @@ This is Python package for reading Broadcast Wave Files in various formats along
 * 0.2.0 - AudioMoth recorders fully supported with data extracted from the ICMT and IART sub-chunks added to the info dictionary. Supports Python <= 3.12.
 * 0.2.1 - Bumped version to fix errors in pypi upload.
 * 0.3.0 - Added sgwave to do some spectral analysis.
+* 0.3.1 - Fixed a dependency error.
 
 ## Installation
 
